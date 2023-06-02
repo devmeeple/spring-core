@@ -12,12 +12,18 @@ public class OrderServiceImpl implements OrderService{
     private MemberRepository memberRepository;
     private DiscountPolicy discountPolicy;
 
-    @Autowired
-    public  OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    //    스프링 빈인데(Component도 포함) 생성자가 딱 1 개인 경우는 @Autowired 생략 가능하다.
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
 
+    @Autowired
+    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+
+    }
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);
