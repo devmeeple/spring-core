@@ -2,6 +2,7 @@ package hello.core.web;
 
 import hello.core.common.MyLogger;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,13 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final MyLogger myLogger;
+    private final ObjectProvider<MyLogger> myLoggerProvider;
 
     @RequestMapping("log-demo")
     // 화면(view)없이 문자만을 주고 받는 예제를 위해 사용
     @ResponseBody
     public String logDemo(HttpServletRequest request) {
-        String requestURL = request.getRequestURI().toString();
+        String requestURL = request.getRequestURL().toString();
+        MyLogger myLogger = myLoggerProvider.getObject();
         myLogger.setRequestURL(requestURL);
         myLogger.log("controller test");
         logDemoService.logic("testId");
